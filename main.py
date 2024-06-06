@@ -54,7 +54,6 @@ async def connect_server(address):
     # Define UDP server details
     ipaddr, port = address.split(":")
     port = int(port)
-    message = b"Hello"  # empty
 
     was_exception = True
     reconnection_attempts = 0
@@ -81,6 +80,8 @@ async def connect_server(address):
                     elif event.type == enet.EVENT_TYPE_RECEIVE:
                         data = parse_message_rooms(address, event.packet.data)
                         if not data is None:
+                            if room_info["servers"][address] == None:
+                                print(f"[{address}] Server information was filled back")
                             room_info["servers"][address] = data
                         # print(f"[{address}] Received data: {data} ({event.packet.data})")
                         peer.disconnect()
@@ -99,6 +100,7 @@ async def connect_server(address):
             if was_exception:
                 reconnection_attempts += 1
                 if reconnection_attempts > RECONNECTION_ATTEMPTS_BEFORE_CLEAN:
+                    print(f"[{address}] Server information was cleared after {RECONNECTION_ATTEMPTS_BEFORE_CLEAN} failed reconnection attempts")
                     room_info["servers"][address] = None
             was_exception = True
             print(f"[{address}] An error occurred, reconnecting in 10s:")
