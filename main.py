@@ -48,7 +48,7 @@ async def shutdown_event():
 async def connect_server(address):
     global room_info
 
-    RECONNECTION_SECONDS = 10
+    RECONNECTION_SECONDS = 30
     RECONNECTION_ATTEMPTS_BEFORE_CLEAN = 10
 
     # Define UDP server details
