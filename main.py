@@ -139,14 +139,15 @@ def parse_message_rooms(address, packet_data):
     # Correctly format player count
     for i, temp in enumerate(temp_rooms):
         is_room_locked = temp > 8
+        current_players = temp - 8 if is_room_locked else temp
         parsed_data["room"].append(
             {
                 "room_name": str(i),
-                "players": temp - 8 if is_room_locked else temp,
+                "players": current_players,
                 "room_locked": is_room_locked,
             }
         )
-        total_players += parsed_data["room"][:-1]["players"]
+        total_players += current_players
     parsed_data["total_players"] = total_players
     prometheus_logging.set_player_count_server(address, total_players)
 
