@@ -146,6 +146,7 @@ def parse_message_rooms(address, packet_data):
                 "room_locked": is_room_locked,
             }
         )
+        total_players += parsed_data["room"][:-1]
     parsed_data["total_players"] = total_players
     prometheus_logging.set_player_count_server(address, total_players)
 
