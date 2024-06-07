@@ -85,8 +85,10 @@ async def connect_server(address):
                             room_info["servers"][address] = data
                         # print(f"[{address}] Received data: {data} ({event.packet.data})")
                         peer.disconnect()
+                        await asyncio.sleep(RECONNECTION_SECONDS)
                     elif event.type == enet.EVENT_TYPE_DISCONNECT:
                         # print(f"[{address}] Disconnected")
+                        await asyncio.sleep(RECONNECTION_SECONDS)
                         break
                     await asyncio.sleep(0.1)
                 except Exception:
@@ -95,7 +97,6 @@ async def connect_server(address):
                     traceback.print_exc()
                     prometheus_logging.set_player_count_server(address, 0)
                     asyncio.sleep(RECONNECTION_SECONDS)
-                await asyncio.sleep(RECONNECTION_SECONDS)
         except Exception:
             if was_exception:
                 reconnection_attempts += 1
