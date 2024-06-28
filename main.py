@@ -117,7 +117,7 @@ def parse_message_rooms(address, packet_data):
     type_size_numRooms = packet_data[0]
     type = type_size_numRooms >> 4
 
-    if not type == 12:
+    if not type == 0:
         return None
 
     # packet_size = type_size_numRooms & 0x0F
@@ -129,7 +129,6 @@ def parse_message_rooms(address, packet_data):
     # Parse numClients for each room
     total_players = 0
     parsed_data["total_players"] = total_players
-    parsed_data["max_players"] = type_size_numRooms
     parsed_data["last_fetched"] = datetime.datetime.now().isoformat()
     parsed_data["room"] = []
     temp_rooms = []
